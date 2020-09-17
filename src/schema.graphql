@@ -1,0 +1,6 @@
+# import * from './generated/nexus.graphql'
+
+type Query {
+  users: [User!]!
+  user(id: ID!): User
+}
