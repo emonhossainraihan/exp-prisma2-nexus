@@ -6,13 +6,69 @@ type BatchPayload {
   count: Int!
 }
 
+scalar DateTime
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
 type Mutation {
-  createOneUser(data: UserCreateInput!): User!
-  deleteManyUser(where: UserWhereInput): BatchPayload!
-  deleteOneUser(where: UserWhereUniqueInput!): User
-  updateManyUser(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  upsertOneUser(create: UserCreateInput!, update: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  createOneProduct(data: ProductCreateInput!): Product!
+  createOneVariant(data: VariantCreateInput!): Variant!
+  deleteManyProduct(where: ProductWhereInput): BatchPayload!
+  deleteManyVariant(where: VariantWhereInput): BatchPayload!
+  deleteOneProduct(where: ProductWhereUniqueInput!): Product
+  deleteOneVariant(where: VariantWhereUniqueInput!): Variant
+  updateManyProduct(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
+  updateManyVariant(data: VariantUpdateManyMutationInput!, where: VariantWhereInput): BatchPayload!
+  updateOneProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+  updateOneVariant(data: VariantUpdateInput!, where: VariantWhereUniqueInput!): Variant
+  upsertOneProduct(create: ProductCreateInput!, update: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product!
+  upsertOneVariant(create: VariantCreateInput!, update: VariantUpdateInput!, where: VariantWhereUniqueInput!): Variant!
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input NestedIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
 }
 
 input NestedStringFilter {
@@ -29,27 +85,90 @@ input NestedStringFilter {
   startsWith: String
 }
 
-input NestedStringNullableFilter {
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: NestedStringNullableFilter
-  notIn: [String!]
-  startsWith: String
+type Product {
+  createdAt: DateTime!
+  id: Int!
+  name: String!
+  updatedAt: DateTime!
+  variants(after: VariantWhereUniqueInput, before: VariantWhereUniqueInput, first: Int, last: Int): [Variant!]!
 }
 
-input NullableStringFieldUpdateOperationsInput {
-  set: String
+input ProductCreateInput {
+  createdAt: DateTime
+  name: String!
+  updatedAt: DateTime
+  variants: VariantCreateManyWithoutProductInput
+}
+
+input ProductCreateOneWithoutVariantsInput {
+  connect: ProductWhereUniqueInput
+  connectOrCreate: ProductCreateOrConnectWithoutVariantInput
+  create: ProductCreateWithoutVariantsInput
+}
+
+input ProductCreateOrConnectWithoutVariantInput {
+  create: ProductCreateWithoutVariantsInput!
+  where: ProductWhereUniqueInput!
+}
+
+input ProductCreateWithoutVariantsInput {
+  createdAt: DateTime
+  name: String!
+  updatedAt: DateTime
+}
+
+input ProductUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  variants: VariantUpdateManyWithoutProductInput
+}
+
+input ProductUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input ProductUpdateOneRequiredWithoutVariantsInput {
+  connect: ProductWhereUniqueInput
+  connectOrCreate: ProductCreateOrConnectWithoutVariantInput
+  create: ProductCreateWithoutVariantsInput
+  update: ProductUpdateWithoutVariantsDataInput
+  upsert: ProductUpsertWithoutVariantsInput
+}
+
+input ProductUpdateWithoutVariantsDataInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input ProductUpsertWithoutVariantsInput {
+  create: ProductCreateWithoutVariantsInput!
+  update: ProductUpdateWithoutVariantsDataInput!
+}
+
+input ProductWhereInput {
+  AND: [ProductWhereInput!]
+  createdAt: DateTimeFilter
+  id: IntFilter
+  name: StringFilter
+  NOT: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  updatedAt: DateTimeFilter
+  variants: VariantListRelationFilter
+}
+
+input ProductWhereUniqueInput {
+  id: Int
 }
 
 type Query {
-  user(where: UserWhereUniqueInput!): User
-  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
+  product(where: ProductWhereUniqueInput!): Product
+  products(after: ProductWhereUniqueInput, before: ProductWhereUniqueInput, first: Int, last: Int): [Product!]!
+  variant(where: VariantWhereUniqueInput!): Variant
+  variants(after: VariantWhereUniqueInput, before: VariantWhereUniqueInput, first: Int, last: Int): [Variant!]!
 }
 
 input StringFieldUpdateOperationsInput {
@@ -70,54 +189,122 @@ input StringFilter {
   startsWith: String
 }
 
-input StringNullableFilter {
-  contains: String
-  endsWith: String
-  equals: String
-  gt: String
-  gte: String
-  in: [String!]
-  lt: String
-  lte: String
-  not: NestedStringNullableFilter
-  notIn: [String!]
-  startsWith: String
+type Variant {
+  createdAt: DateTime!
+  id: Int!
+  name: String!
+  prodId: Int!
+  product: Product!
+  updatedAt: DateTime!
 }
 
-type User {
-  email: String!
-  id: String!
-  name: String
+input VariantCreateInput {
+  createdAt: DateTime
+  name: String!
+  product: ProductCreateOneWithoutVariantsInput!
+  updatedAt: DateTime
 }
 
-input UserCreateInput {
-  email: String!
-  id: String
-  name: String
+input VariantCreateManyWithoutProductInput {
+  connect: [VariantWhereUniqueInput!]
+  connectOrCreate: [VariantCreateOrConnectWithoutProductInput!]
+  create: [VariantCreateWithoutProductInput!]
 }
 
-input UserUpdateInput {
-  email: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
+input VariantCreateOrConnectWithoutProductInput {
+  create: VariantCreateWithoutProductInput!
+  where: VariantWhereUniqueInput!
 }
 
-input UserUpdateManyMutationInput {
-  email: StringFieldUpdateOperationsInput
-  id: StringFieldUpdateOperationsInput
-  name: NullableStringFieldUpdateOperationsInput
+input VariantCreateWithoutProductInput {
+  createdAt: DateTime
+  name: String!
+  updatedAt: DateTime
 }
 
-input UserWhereInput {
-  AND: [UserWhereInput!]
-  email: StringFilter
-  id: StringFilter
-  name: StringNullableFilter
-  NOT: [UserWhereInput!]
-  OR: [UserWhereInput!]
+input VariantListRelationFilter {
+  every: VariantWhereInput
+  none: VariantWhereInput
+  some: VariantWhereInput
 }
 
-input UserWhereUniqueInput {
-  email: String
-  id: String
+input VariantScalarWhereInput {
+  AND: [VariantScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: IntFilter
+  name: StringFilter
+  NOT: [VariantScalarWhereInput!]
+  OR: [VariantScalarWhereInput!]
+  prodId: IntFilter
+  updatedAt: DateTimeFilter
+}
+
+input VariantUpdateInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  product: ProductUpdateOneRequiredWithoutVariantsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input VariantUpdateManyDataInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input VariantUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input VariantUpdateManyWithoutProductInput {
+  connect: [VariantWhereUniqueInput!]
+  connectOrCreate: [VariantCreateOrConnectWithoutProductInput!]
+  create: [VariantCreateWithoutProductInput!]
+  delete: [VariantWhereUniqueInput!]
+  deleteMany: [VariantScalarWhereInput!]
+  disconnect: [VariantWhereUniqueInput!]
+  set: [VariantWhereUniqueInput!]
+  update: [VariantUpdateWithWhereUniqueWithoutProductInput!]
+  updateMany: [VariantUpdateManyWithWhereNestedInput!]
+  upsert: [VariantUpsertWithWhereUniqueWithoutProductInput!]
+}
+
+input VariantUpdateManyWithWhereNestedInput {
+  data: VariantUpdateManyDataInput!
+  where: VariantScalarWhereInput!
+}
+
+input VariantUpdateWithoutProductDataInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input VariantUpdateWithWhereUniqueWithoutProductInput {
+  data: VariantUpdateWithoutProductDataInput!
+  where: VariantWhereUniqueInput!
+}
+
+input VariantUpsertWithWhereUniqueWithoutProductInput {
+  create: VariantCreateWithoutProductInput!
+  update: VariantUpdateWithoutProductDataInput!
+  where: VariantWhereUniqueInput!
+}
+
+input VariantWhereInput {
+  AND: [VariantWhereInput!]
+  createdAt: DateTimeFilter
+  id: IntFilter
+  name: StringFilter
+  NOT: [VariantWhereInput!]
+  OR: [VariantWhereInput!]
+  prodId: IntFilter
+  product: ProductWhereInput
+  updatedAt: DateTimeFilter
+}
+
+input VariantWhereUniqueInput {
+  id: Int
 }

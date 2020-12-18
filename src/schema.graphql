@@ -1,6 +1,25 @@
 # import * from './generated/nexus.graphql'
 
 type Query {
-  users: [User!]!
-  user(id: ID!): User
+  products: [Product]
+  productById(id: ID!): Product
+  variants: [Variant]
+  variantById(id: ID!): Product
+}
+
+
+type Mutation{
+  createProduct(name:String!): Product
+  updateProduct(id:ID!,name: String!): Product
+  deleteProduct(id:ID!): Product
+  """
+  Please remember that If you create relationship between variant and product 
+  then you can't delete any of them at this stage we will figure out how to do cascading delete
+  """  
+  createVariant(id:ID!,name:String!):Variant
+  """
+  Provide an array of product id. Remember if your product have any relation with variant then it will end up 
+  with an error `violate the required relation ProductToVariant`
+  """
+  deleteProducts(ids:[ID!]!):String
 }
